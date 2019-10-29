@@ -1,0 +1,73 @@
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="/styles/custom.css">
+    </head>
+
+    <body>
+        <div class="container-color d-flex w-100 h-100 mx-auto flex-column">
+            <header class="masthead mb-auto custom-nav">
+                <div class="container">
+                    <img class='brand-image' src='/images/photoioheader.png' />
+                </div>
+            </header>
+            <main role="main" class="container">
+                <div class="text-center mb-4">
+                        <h1 id='accountHeader'>Checking your Account..</h1>
+                        <div id='detailsDiv' style='display:none; background-color: #808080b8; max-width: 500px; margin: auto;'>
+                           <pre style="color: white" id='accountMessage'> </pre>
+                        </div>
+                    </div>
+            </main>
+            <footer class="mastfoot mt-auto fs-foot">
+                <div class="container">
+                  <p> To see more examples visit <a href="https://www.fastspringexamples.com/">fastspringexamples</a></p>
+                </div>
+          </footer>
+        </div>
+        <script>
+            window.addEventListener('DOMContentLoaded', (event) => {
+                // Check if user is registered based on the GET params
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('accountId')) {
+                    const accountId = urlParams.get('accountId');
+                    // Create AJAX request to our backend
+                    const Http = new XMLHttpRequest();
+                    const url= 'getAccount';
+                    Http.open('POST', url, true);
+                    Http.setRequestHeader("Content-Type", "application/json");
+                   
+                    Http.onreadystatechange = function(){
+                        if (this.readyState === 4 && this.status === 200) {
+                            const res = JSON.parse(this.responseText);
+                            if (res && res.success) {
+                                document.getElementById('accountHeader').innerHTML = 'Your account details';
+                                document.getElementById('detailsDiv').style.display = 'block';
+                                document.getElementById('accountMessage').innerHTML = JSON.stringify(res.account, null, 2);
+                            } else if (res.error && res.redirect){
+                                alert(`Error in account: ${res.error}`);
+                                window.location.href = res.redirect;
+                            } else {
+                                window.location.href = 'store.html';
+                            }
+                        }
+                    };
+
+                    Http.send(JSON.stringify({
+                        accountId
+                    }));
+                } else {
+                    window.location.href = 'store.html';
+                }
+            });
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>

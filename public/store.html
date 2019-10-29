@@ -1,0 +1,91 @@
+
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="/styles/custom.css">
+    </head>
+
+    <body>
+        <div class="container-color d-flex w-100 h-100 mx-auto flex-column">
+            <header class="masthead mb-auto custom-nav">
+                <div class="container">
+                    <img class='brand-image' src='/images/photoioheader.png' />
+                </div>
+            </header>
+            <main role="main" class="container">
+                <div class="row">
+                    <div class="col-4">
+                        <img class='product-image' data-fsc-item-path="phot-io-main-app" data-fsc-item-image />
+                    </div>
+                    <div class="col-8">
+                        <h3 data-fsc-item-path="phot-io-main-app" data-fsc-item-display>
+                            <!--This value will be replaced-->
+                        </h3>
+                        <span data-fsc-item-path="phot-io-main-app" data-fsc-item-description-summary>
+                            <!--This value will be replaced-->
+                        </span>
+                        <br/>
+                        <div class="purchase-container">
+                            <span class='fs-price' data-fsc-item-path="phot-io-main-app" data-fsc-item-price>
+                                <!--This value will be replaced-->
+                            </span>
+                            <button class='btn btn-primary btn-lg fs-button' data-fsc-item-path-value="phot-io-main-app" data-fsc-action='Add, Checkout'> Purchase now </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="mastfoot mt-auto fs-foot">
+                <div class="container">
+                  <p> To see more examples visit <a href="https://www.fastspringexamples.com/">fastspringexamples</a></p>
+                </div>
+          </footer>
+        </div>
+        <script
+            id="fsc-api"
+            src="https://d1f8f9xcsvx3ha.cloudfront.net/sbl/0.7.9/fastspring-builder.min.js"
+            type="text/javascript"
+            data-storefront="fastspringexamples.test.onfastspring.com/popup-fastspringexamples"
+            data-popup-closed="onPopupClose"
+        >
+        </script>
+
+        <script type="text/javascript">
+            /*
+                Callback function triggered when the user closes the popup checkout.
+                It checks that an order is completed and sends its id to our backend for final redirection
+                https://docs.fastspring.com/storefronts/popup-storefronts-on-your-website/redirecting-to-a-custom-page-following-popup-storefront-order-completion
+            */
+            function onPopupClose(orderReference) {
+                // Make sure an order has been completed
+                if (orderReference) {
+                    fastspring.builder.reset();
+                    // Create AJAX request with orderId
+                    const Http = new XMLHttpRequest();
+                    const url= `/checkorder/${orderReference.id}`;
+                    Http.open('GET', url);
+                    Http.onreadystatechange = function() {
+                        // Check response is correct and parse the receiving JSON
+                        if (this.readyState === 4 && this.status === 200) {
+                            const res = JSON.parse(this.responseText);
+                            if (res && res.success) {
+                                window.location.href = res.redirect;
+                            } else {
+                                alert('Buyer not found!');
+                            }
+                        }
+                    };
+                    Http.send();
+                }
+            }
+
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>
