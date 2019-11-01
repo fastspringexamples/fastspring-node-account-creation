@@ -26,7 +26,7 @@ We will see how easy it is to achieve this process with FastSpring. We will leve
 # High level overview  {#high-level-overview}
 
 
-![alt_text](/images/Account created post purchase (1).png)
+![alt_text](/images/diagram_flow.png)
 
 
 _Standard FastSpring purchase process _
