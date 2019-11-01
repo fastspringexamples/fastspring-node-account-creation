@@ -23,7 +23,7 @@ We will see how easy it is to achieve this process with FastSpring. We will leve
 
 
 
-# High level overview  {#high-level-overview}
+# High level overview
 
 
 ![alt_text](/images/diagram_flow.png)
@@ -51,7 +51,7 @@ The above diagram depicts the standard Buyer-Seller-FastSpring flow in a swim-la
 One thing to notice is that when the order is completed (step 4) the order.completed webhook event will be fired off. Most of the time, your server will receive this information almost instantly. However, webhooks generation is queued, which means that depending on the current workload of the FastSpring servers it may take a bit longer than usual to reach your backend. It’s for this reason that we wait until the user closes the popup to check our database. This gives us some extra time and provides an optimal user experience.
 
 
-# Implementation {#implementation}
+# Implementation
 
 **Prerequisites**
 
@@ -131,10 +131,7 @@ Let’s test that our server is working fine. Execute the app by running `node i
 
 
 
-<p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Account-creation2.png). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Account-creation2.png "image_tooltip")
+![alt_text](/images/hello_world.png)
 
 
 Now we’ll add our [Store Builder Library](https://docs.fastspring.com/integrating-with-fastspring/store-builder-library) to our _store.html_ page. This will allow us to pull information about our products from our store and provide the popup checkout in order to complete the purchase. For this tutorial we are pointing to our official FastSpring example store, which is documented here at the reference site [fastspringexamples](https://www.fastspringexamples.com/). In your case, replace the data-storefront value to point to your store:
@@ -181,26 +178,18 @@ Now we can complete the purchase with the popup checkout. Reload the page and cl
 
 
 
-<p id="gdcalert4" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Account-creation3.png). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert5">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Account-creation3.png "image_tooltip")
+![alt_text](/images/popup.png)
 
 
 After the order is completed you will see the Thank you popup:
 
 
-
-<p id="gdcalert5" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Account-creation4.png). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert6">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Account-creation4.png "image_tooltip")
+![alt_text](/images/thank_you.png)
 
 
 
 ## Phase 2. Using webhooks to create an account
 
- \
 Now that we can complete a purchase, the next thing we want to do is to create an account in our backend so that the buyer can log into our system.
 
 We will use the [order.completed webhook](https://docs.fastspring.com/integrating-with-fastspring/webhooks/order-completed) which is fired off every time a new purchase is completed. At FastSpring accounts are uniquely identified by their email address.
@@ -277,11 +266,7 @@ You will see the object {} being logged in your server’s process and a 200 OK 
 Now let’s go to our dashboard and subscribe to the order.completed webhook event in the FastSpring dashboard(for more about subscribing to webhooks visit [here](https://docs.fastspring.com/integrating-with-fastspring/webhooks#Webhooks-SettingUpWebhooks))
 
 
-
-<p id="gdcalert6" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Account-creation5.png). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert7">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Account-creation5.png "image_tooltip")
+![alt_text](/images/webhook_setup.png)
 
 
 In the URL field we have specified the public address randomly assigned by ngrok. Once more, remember to change that with the one you have been assigned.
@@ -289,11 +274,7 @@ In the URL field we have specified the public address randomly assigned by ngrok
 Let’s now test our webhook! To do that, we will complete a purchase with an email address we haven’t used yet in our system.
 
 
-
-<p id="gdcalert7" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Account-creation6.png). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert8">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Account-creation6.png "image_tooltip")
+![alt_text](/images/popup2.png)
 
 
 You should see the event information being logged in your server’s thread:
@@ -347,9 +328,6 @@ You should see the event information being logged in your server’s thread:
 We will use the account Id as the unique id to store the customer object which contains basic information about the buyer. 
 
 Now that we have verified that we are receiving webbook information in our endpoint, let’s add some logic to add new customers to our database. For our example we will just write the data to a file on disk that will represent our database. Create a file called **db.json** inside a new folder **database** in our root directory. This file should initially contain just an empty object:
-
- \
-
 
 
 ```
@@ -621,11 +599,7 @@ Before start testing our endpoint, let’s create a very basic version of these 
 We can now test the flow. Restart, the server and complete a new purchase. Because we haven’t set passwords for any user yet you should end up in the password page.
 
 
-
-<p id="gdcalert8" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Account-creation7.png). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert9">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Account-creation7.png "image_tooltip")
+![alt_text](/images/password.png)
 
 
 As a last step, we will add some logic to this password page to send the password to our backend and complete the registration process. At the very minimum, it should contain an input to set the password and a function to submit the data.
