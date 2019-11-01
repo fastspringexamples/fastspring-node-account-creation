@@ -90,7 +90,7 @@ npm install --save express
 ```
 
 
-Next, we’ll create our file **index.js **which will act as the entry point of our server. For now, it will only serve static files which will be located in a public folder that we create at the root directory.
+Next, we’ll create our file **index.js** which will act as the entry point of our server. For now, it will only serve static files which will be located in a public folder that we create at the root directory.
 
 
 ```
@@ -115,7 +115,7 @@ mkdir public
 ```
 
 
-Inside the recently created public folder, add a file **store.html.** This file will hold the frontend of our storefront. For now we will add the bare minimum code:
+Inside the recently created public folder, add a file **store.html** This file will hold the frontend of our storefront. For now we will add the bare minimum code:
 
 
 ```
@@ -335,7 +335,7 @@ Now that we have verified that we are receiving webbook information in our endpo
 ```
 
 
-We’ll also create a very simple util to act as the database driver. It will basically contain a couple of methods to read and write on the JSON file. Create a new folder **utils** at the root directory with one file **DBdriver.js:**
+We’ll also create a very simple util to act as the database driver. It will basically contain a couple of methods to read and write on the JSON file. Create a new folder **utils** at the root directory with one file **DBdriver.js**:
 
 
 ```
@@ -360,7 +360,7 @@ module.exports = {
 ```
 
 
-Inside our processor endpoint we’ll add the code needed to get the customer data from the order.completed event. As we just said, we know that the data will be under the **data.customer** object key. We will key our customers by their **account**Id and add the customer information to that object.
+Inside our processor endpoint we’ll add the code needed to get the customer data from the order.completed event. As we just said, we know that the data will be under the **data.customer** object key. We will key our customers by their **accountId** and add the customer information to that object.
 
 
 ```
@@ -426,9 +426,9 @@ Let’s test it out! Restart the server and complete a new purchase with an emai
 
 Now that we are capable of adding new customers to our database the last step is to redirect them to a page where they can complete their account on our site by setting a password.
 
-We do this once the user closes the popup checkout after completing the purchase. When that happens the **[data-popup-closed](https://docs.fastspring.com/integrating-with-fastspring/store-builder-library/getting-started-with-store-builder-library) **event is fired. This callback contains the id and reference of the order just being made. We will store the orderId back to our backend. Next via the FastSpring API we check whether the customer is already in our database and has a password set. If it does, we will redirect her to their account page; if it doesn’t we will redirect her to a page where she can set the password.
+We do this once the user closes the popup checkout after completing the purchase. When that happens the [data-popup-closed](https://docs.fastspring.com/integrating-with-fastspring/store-builder-library/getting-started-with-store-builder-library) event is fired. This callback contains the id and reference of the order just being made. We will store the orderId back to our backend. Next via the FastSpring API we check whether the customer is already in our database and has a password set. If it does, we will redirect her to their account page; if it doesn’t we will redirect her to a page where she can set the password.
 
-Let’s start by adding the **data-popup-closed **callback function in the browser (you can see a more detailed explanation in [this article](https://docs.fastspring.com/storefronts/popup-storefronts-on-your-website/redirecting-to-a-custom-page-following-popup-storefront-order-completion)).
+Let’s start by adding the **data-popup-closed** callback function in the browser (you can see a more detailed explanation in [this article](https://docs.fastspring.com/storefronts/popup-storefronts-on-your-website/redirecting-to-a-custom-page-following-popup-storefront-order-completion)).
 
 We need to add the callback to our SBL script in the store.html file:
 
@@ -790,7 +790,7 @@ app.post('/getAccount', (req, res) => {
 You can now restart the server and test the whole flow!
 
 
-# Wrapping up {#wrapping-up}
+# Wrapping up
 
 Congratulations! You have just developed an application that creates an account in your backend after the user completes a purchase with FastSpring. We have covered how to:
 
@@ -802,7 +802,4 @@ Congratulations! You have just developed an application that creates an account 
 *   Retrieve the details of an existing order with the [/orders API](https://docs.fastspring.com/integrating-with-fastspring/fastspring-api/orders) endpoint.
 
 To learn more about how to integrate other common eCommerce scenarios with FastSpring check out our [tutorials](https://www.fastspringexamples.com/) page! 
-
-
-<!-- Docs to Markdown version 1.0β17 -->
 
