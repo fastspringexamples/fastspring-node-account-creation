@@ -3,7 +3,7 @@
 
 The aim of this tutorial is to explain one implementation of a common user case when purchasing a SaaS product: the creation of a user account after the purchase. SaaS solutions rely on online user authentication to use their products. More often than not, integrating your eCommerce platform with your user creation process in your backend can be painful or even not possible at all. 
 
-We will see how easy it is to achieve this process with FastSpring. We will leverage on standard JSON based webhooks and API calls to achieve a seamless integration so that buyers can start using the product as soon as they complete their purchase. \
+We will see how easy it is to achieve this process with FastSpring. We will leverage on standard JSON based webhooks and API calls to achieve a seamless integration so that buyers can start using the product as soon as they complete their purchase.
 
 
 
@@ -260,7 +260,7 @@ In the URL field we have specified the public address randomly assigned by ngrok
 Let’s now test our webhook! To do that, we will complete a purchase with an email address we haven’t used yet in our system.
 
 
-![alt_text](/images/popup2.png)
+![alt_text](/images/popup_2.png)
 
 
 You should see the event information being logged in your server’s thread:
