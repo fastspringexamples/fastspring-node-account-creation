@@ -1,9 +1,8 @@
 ---
 title: Account Creation After Purchase
----
----
 description: ![alt_text](https://fastspringexamples.github.io/fastspring-sessions-playground/images/fastspring-logo.png) FastSpring tutorial
 ---
+
 
 # Abstract
 
