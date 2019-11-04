@@ -15,8 +15,6 @@ We will see how easy it is to achieve this process with FastSpring. We will leve
 ![alt_text](/images/diagram_flow.png)
 
 
-_Standard FastSpring purchase process _
-
 The above diagram depicts the standard Buyer-Seller-FastSpring flow in a swim-lane diagram. Let’s look at each step in more detail:
 
 
