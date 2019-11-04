@@ -1,7 +1,7 @@
 
 # Abstract
 
-The aim of this tutorial is to explain one implementation of a common user case when purchasing a SaaS product: the creation of a user account after the purchase. SaaS solutions rely on online user authentication to use their products. More often than not, integrating your eCommerce platform with your user creation process in your backend can be painful or even not possible at all. 
+The aim of this tutorial is to explain the implementation of a common user case when purchasing a SaaS product: the creation of a user account after the purchase. SaaS solutions rely on online user authentication to use their products. More often than not, integrating your eCommerce platform with your user creation process in your backend can be painful or even not possible at all. 
 
 We will see how easy it is to achieve this process with FastSpring. We will leverage on standard JSON based webhooks and API calls to achieve a seamless integration so that buyers can start using the product as soon as they complete their purchase.
 
