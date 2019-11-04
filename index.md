@@ -1,19 +1,5 @@
 
-# **PSI - Tutorial - Account creation after purchase**
-
-Questions? Contact [jtrujillo@fastspring.com](mailto:jtrujillo@fastspring.com)
-
-
-# Table of Contents
-
-
-[TOC]
-
-
-
-
-
-# Abstract {#abstract}
+# Abstract
 
 The aim of this tutorial is to explain one implementation of a common user case when purchasing a SaaS product: the creation of a user account after the purchase. SaaS solutions rely on online user authentication to use their products. More often than not, integrating your eCommerce platform with your user creation process in your backend can be painful or even not possible at all. 
 
