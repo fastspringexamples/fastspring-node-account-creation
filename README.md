@@ -1,7 +1,16 @@
 # FastSpring Tutorial: Account creation after purchase
 
-This is the code repository for our [Account creation after purchase](https://www.todo.com) tutorial.
+This is the code repository for the tutorial "[Account creation after purchase](https://www.todo.com)".
+
+## Requirements
+
+- Node >= v11.0.0
+
+## Installation
+```
+npm install
+```
 
 ## License
 
-The code is open source and available under the [MIT License](LICENSE).
+MIT.
