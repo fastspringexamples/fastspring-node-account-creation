@@ -137,3 +137,7 @@
     height: 3rem;
     z-index: 100;
 }
+
+#detailsDiv table {
+    background-color: white;
+}
