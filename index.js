@@ -55,7 +55,7 @@ app.post('/processor', (req, res) => {
  * @param {String} - orderId
  * @returns {Object} - Redirect user to new page based on its password
  */
-app.get('/checkorder/:orderId', (req, res) => {
+app.get('/checkorder/:orderId', async (req, res) => {
     try {
         // Get orderId from request params
         const { orderId } = req.params;
@@ -64,25 +64,25 @@ app.get('/checkorder/:orderId', (req, res) => {
         }
 
         // Retrieve order from FastSpring API
-        FSApi.get(`/orders/${orderId}`).then((order) => {
-            if (!order) {
-                throw new Error('Order not found');
-            }
-            // Check in database if buyer is in our database
-            const accountId = order.account;
-            const dbContent = DBdriver.getContent();
-            if (!dbContent[accountId]) {
-                throw new Error('User not found');
-            }
-            // User exists, check whether user has already set a password
-            if (dbContent[accountId].password) {
-                // User is already registered, redirect to his account
-                return res.json({ success: true, redirect: `/account.html?accountId=${accountId}` });
-            }
-            // User does not have a password yet
-            // Redirect to password page
-            return res.json({ success: true, redirect: `/password.html?accountId=${accountId}` });
-        });
+        const order = await FSApi.get(`/orders/${orderId}`);
+        if (order.error) {
+            throw new Error(order.error);
+        }
+
+        // Check in database if buyer is in our database
+        const accountId = order.account;
+        const dbContent = DBdriver.getContent();
+        if (!dbContent[accountId]) {
+            throw new Error('User not found');
+        }
+        // User exists, check whether user has already set a password
+        if (dbContent[accountId].password) {
+            // User is already registered, redirect to his account
+            return res.json({ success: true, redirect: `/account.html?accountId=${accountId}` });
+        }
+        // User does not have a password yet
+        // Redirect to password page
+        return res.json({ success: true, redirect: `/password.html?accountId=${accountId}` });
     } catch (err) {
         console.log('An error has occurred while checking order: ', err.message);
         res.json({ success: false, error: err.message });

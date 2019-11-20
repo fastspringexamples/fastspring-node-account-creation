@@ -75,7 +75,7 @@
                             if (res && res.success) {
                                 window.location.href = res.redirect;
                             } else {
-                                alert('Buyer not found!');
+                                alert(res.error || 'Problems creating user in database');
                             }
                         }
                     };

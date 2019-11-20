@@ -2,6 +2,7 @@
  * https://docs.fastspring.com/integrating-with-fastspring/fastspring-api
  */
 const request = require('request-promise');
+const errors = require('request-promise/errors');
 
 /* This credentials point to the fastspringexamples store. To
  * To put to your personal store, you'll need replace with your own credentials
@@ -27,10 +28,14 @@ const get = (params) => {
         },
         json: true
     };
-    return request(options).catch((err) => {
-        console.log('Request error ', err.message);
-        throw err;
-    });
+    return request(options)
+        .catch(errors.StatusCodeError, (reason) => {
+            // The server responded with a status codes other than 2xx.
+            if (reason.statusCode === 400) {
+                return { error: 'Order not found' };
+            }
+            return { error: 'Problems accessing API' };
+        });
 };
 
 module.exports = { get };
