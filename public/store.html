@@ -17,7 +17,10 @@
                     <img class='brand-image' src='/images/photoioheader.png' />
                 </div>
             </header>
-            <main role="main" class="container">
+            <div id="loading-spinner" class="spinner-border pageLoader" style="display:none" role="status">
+                    <span class="sr-only">Loading...</span>
+            </div>
+            <main id="main-container" role="main" class="container">
                 <div class="row">
                     <div class="col-4">
                         <img class='product-image' data-fsc-item-path="phot-io-main-app" data-fsc-item-image />
@@ -64,22 +67,31 @@
                 // Make sure an order has been completed
                 if (orderReference) {
                     fastspring.builder.reset();
+                    // Before performing the request, add some extra padding time
+                    // in case the webhook didn't arrive to our server yet 
+                    $('#main-container').addClass('loading');
+                    $('#loading-spinner').show();
+
                     // Create AJAX request with orderId
-                    const Http = new XMLHttpRequest();
-                    const url= `/checkorder/${orderReference.id}`;
-                    Http.open('GET', url);
-                    Http.onreadystatechange = function() {
-                        // Check response is correct and parse the receiving JSON
-                        if (this.readyState === 4 && this.status === 200) {
-                            const res = JSON.parse(this.responseText);
-                            if (res && res.success) {
-                                window.location.href = res.redirect;
-                            } else {
-                                alert(res.error || 'Problems creating user in database');
+                    setTimeout(() => {
+                        const Http = new XMLHttpRequest();
+                        const url= `/checkorder/${orderReference.id}`;
+                        Http.open('GET', url);
+                        Http.onreadystatechange = function() {
+                            // Check response is correct and parse the receiving JSON
+                            if (this.readyState === 4 && this.status === 200) {
+                                const res = JSON.parse(this.responseText);
+                                if (res && res.success) {
+                                    window.location.href = res.redirect;
+                                } else {
+                                    alert(res.error || 'Problems creating user in database');
+                                }
+                                $('#main-container').removeClass('loading');
+                                $('#loading-spinner').hide();
                             }
-                        }
-                    };
-                    Http.send();
+                        };
+                        Http.send();
+                    }, 3000);
                 }
             }
 
