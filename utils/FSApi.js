@@ -4,13 +4,13 @@
 const request = require('request-promise');
 const errors = require('request-promise/errors');
 
-/* This credentials point to the fastspringexamples store. To
+/* These credentials point to the fastspringexamples store. To
  * To put to your personal store, you'll need replace with your own credentials
  * https://docs.fastspring.com/integrating-with-fastspring/fastspring-api#FastSpringAPI-accessing
  */
 const FS_CREDENTIALS = {
-    username: 'NHOLARM9RPSQFRANIDPLZG',
-    password: 'gJ16aUlHSgqAo4BPuKHS6g',
+    username: 'GIDFDMBCQDGZO_CSAQBRCG',
+    password: 'Nazed1GISuaVRSdQR2UHhw',
 };
 
 const get = (params) => {
