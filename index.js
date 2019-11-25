@@ -167,7 +167,14 @@ app.post('/getAccount', (req, res) => {
     }
 });
 
+/* GET *
+ * Add this last route to redirect to store.html page by default.
+ */
+app.get('*', function(req, res) {
+    res.redirect('/store.html');
+});
 
-// Start listening in port 3000
-const port = 3000;
+
+// Start listening in port 8080
+const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`App succesfully listening on port ${port}!`));
