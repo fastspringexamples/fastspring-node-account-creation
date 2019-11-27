@@ -5,7 +5,7 @@
 const path = require('path');
 const fs = require('fs');
 
-const dbLocation = '/tmp/db.json'; // path.resolve(__dirname, '../database/db.json'); // '/tmp/db.json'; 
+const dbLocation = '/tmp/db.json';
 
 const checkFileExist = () => {
     if (!fs.existsSync(dbLocation)) {
