@@ -50,9 +50,9 @@
         </div>
         <script
             id="fsc-api"
-            src="https://d1f8f9xcsvx3ha.cloudfront.net/sbl/0.7.9/fastspring-builder.min.js"
+            src="https://d1f8f9xcsvx3ha.cloudfront.net/sbl/0.8.0/fastspring-builder.min.js"
             type="text/javascript"
-            data-storefront="fastspringexamples.test.onfastspring.com/popup-fastspringexamples"
+            data-storefront="fastspringexamplesii.test.onfastspring.com/popup-fastspringexamplesii"
             data-popup-closed="onPopupClose"
         >
         </script>
@@ -62,38 +62,77 @@
                 Callback function triggered when the user closes the popup checkout.
                 It checks that an order is completed and sends its id to our backend for final redirection
                 https://docs.fastspring.com/storefronts/popup-storefronts-on-your-website/redirecting-to-a-custom-page-following-popup-storefront-order-completion
+                We need to wait until the order.completed webhook reaches our backend so that we can create an account.
+                Because it may take some time, we are polling the server until the order information has arrived before redirecting
+                the user. 
             */
             function onPopupClose(orderReference) {
                 // Make sure an order has been completed
                 if (orderReference) {
+                    // Reset current session
                     fastspring.builder.reset();
-                    // Before performing the request, add some extra padding time
-                    // in case the webhook didn't arrive to our server yet 
-                    $('#main-container').addClass('loading');
-                    $('#loading-spinner').show();
+                    // Show loader
+                    showLoadingState(true);
 
-                    // Create AJAX request with orderId
+                    // Polling frequency variables: (10 * 2000) = 20 seconds
+                    const pollIntents = 10;
+                    const pollFreq = 2000; // milliseconds
+
+                    // Start polling
                     setTimeout(() => {
-                        const Http = new XMLHttpRequest();
-                        const url= `/checkorder/${orderReference.id}`;
-                        Http.open('GET', url);
-                        Http.onreadystatechange = function() {
-                            // Check response is correct and parse the receiving JSON
-                            if (this.readyState === 4 && this.status === 200) {
-                                const res = JSON.parse(this.responseText);
-                                if (res && res.success) {
-                                    window.location.href = res.redirect;
-                                } else {
-                                    alert(res.error || 'Problems creating user in database');
-                                }
-                                $('#main-container').removeClass('loading');
-                                $('#loading-spinner').hide();
-                            }
-                        };
-                        Http.send();
-                    }, 3000);
+                        checkOrder(orderReference.id, pollIntents, pollFreq);
+                    }, pollFreq);
                 }
             }
+
+            /*
+                Polling function to check if an order exists and our backend has already created
+                an account based on the information received in the order.completed webhook
+            */
+            function checkOrder(orderId, counter, freq) {
+                // Check if counter has reached to 0
+                if (counter < 1) {
+                    alert('Problem creating user in database. Please try again');
+                    showLoadingState(false);
+                    return false;
+                }   
+                const Http = new XMLHttpRequest();
+                const url= `/checkorder/${orderId}`;
+                Http.open('GET', url);
+                Http.onreadystatechange = function() {
+                    // Check response is correct and parse the receiving JSON
+                    if (this.readyState === 4 && this.status === 200) {
+                        const res = JSON.parse(this.responseText);
+                        if (res && res.success) {
+                            window.location.href = res.redirect;
+                        } else if (res.error && res.error === 'User not found') {
+                            // Keep polling
+                            setTimeout(() => { checkOrder(orderId, counter - 1, freq) }, 1000);
+                        } else {
+                            // A problem happened in our server 
+                            alert(res.error || 'Problem creating user in database. Please try again');
+                            showLoadingState(false);
+                            return false;
+                        }
+
+                    }
+                };
+                Http.send();
+            }
+
+            /*
+                Util function to display/hide loading state
+            */
+            function showLoadingState(show) {
+                if (show) {
+                    $('#main-container').addClass('loading');
+                    $('#loading-spinner').show();
+                } else {
+                    $('#main-container').removeClass('loading');
+                    $('#loading-spinner').hide();
+                }
+            }
+
 
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
