@@ -167,6 +167,23 @@ app.post('/getAccount', (req, res) => {
     }
 });
 
+// Custom function to clear
+app.get('/clearDB', function(req, res) {
+    try {
+        const fs = require('fs');
+        const dbLocation = '/tmp/db.json';
+        if (fs.existsSync(dbLocation)) {
+            // Empty temporary database
+            fs.writeFileSync(dbLocation, '{}', 'utf8');
+        }
+    } catch (err) {
+        console.log('Problems deleting DB ', err.message);
+    } finally {
+        // Always make sure to acknowledge event
+        res.sendStatus(200);
+    }
+});
+
 /* GET *
  * Add this last route to redirect to store.html page by default.
  */

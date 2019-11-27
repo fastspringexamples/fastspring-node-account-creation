@@ -1,0 +1,5 @@
+cron:
+- description: "Delete temporary database"
+  url: /clearDB
+  schedule: every sunday 09:00
+  target: account-creation 
