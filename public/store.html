@@ -57,10 +57,22 @@
             type="text/javascript"
             data-storefront="fastspringexamplesii.test.onfastspring.com/popup-fastspringexamplesii"
             data-popup-closed="onPopupClose"
+            data-popup-webhook-received="onWebhookReceived"
         >
         </script>
 
         <script type="text/javascript">
+
+            function onWebhookReceived(order) {
+                if (order) {
+                    var xmlhttp = new XMLHttpRequest(); 
+                    var theUrl = "/processor";
+                    xmlhttp.open("POST", theUrl);
+                    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xmlhttp.send(JSON.stringify({ order }));
+                }
+            }
+
             /*
                 Callback function triggered when the user closes the popup checkout.
                 It checks that an order is completed and sends its id to our backend for final redirection
@@ -76,29 +88,15 @@
                     fastspring.builder.reset();
                     // Show loader
                     showLoadingState(true);
-
-                    // Polling frequency variables: (10 * 2000) = 20 seconds
-                    const pollIntents = 10;
-                    const pollFreq = 2000; // milliseconds
-
-                    // Start polling
-                    setTimeout(() => {
-                        checkOrder(orderReference.id, pollIntents, pollFreq);
-                    }, pollFreq);
+                    checkOrder(orderReference.id);
                 }
             }
 
             /*
-                Polling function to check if an order exists and our backend has already created
-                an account based on the information received in the order.completed webhook
+                Function to check if an order exists and our backend has already created
+                an account based on the information received in the browser webhook
             */
-            function checkOrder(orderId, counter, freq) {
-                // Check if counter has reached to 0
-                if (counter < 1) {
-                    alert('Problem creating user in database. Please try again');
-                    showLoadingState(false);
-                    return false;
-                }   
+            function checkOrder(orderId) {
                 const Http = new XMLHttpRequest();
                 const url= `/checkorder/${orderId}`;
                 Http.open('GET', url);
@@ -108,9 +106,6 @@
                         const res = JSON.parse(this.responseText);
                         if (res && res.success) {
                             window.location.href = res.redirect;
-                        } else if (res.error && res.error === 'User not found') {
-                            // Keep polling
-                            setTimeout(() => { checkOrder(orderId, counter - 1, freq) }, 1000);
                         } else {
                             // A problem happened in our server 
                             alert(res.error || 'Problem creating user in database. Please try again');

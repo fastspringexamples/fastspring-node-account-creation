@@ -13,8 +13,8 @@ app.use(express.static('public')); // Serve static files from 'public' folder
 
 
 /* POST /processor
- * Processes order.completed FastSpring webhook to add buyer's account information
- * to database.
+ * Processes order information from script webhook function on the frontend and adds
+ * buyer's account information to database.
  *
  * @param {Object} - order.completed event https://docs.fastspring.com/integrating-with-fastspring/webhooks/order-completed
  * @returns {number} - Acknowledge event with 200 HTTP status code
@@ -22,22 +22,15 @@ app.use(express.static('public')); // Serve static files from 'public' folder
 app.post('/processor', (req, res) => {
     try {
         // Check that request contains an events object
-        if (req.body && Array.isArray(req.body.events)) {
-            req.body.events.forEach((event) => {
-                // Only process order.completed events
-                // Check that the order was successfully completed
-                if (event.type === 'order.completed' && event.data.completed) {
-                    // Get FastSpring assigned accountId
-                    const accountId = event.data.account;
-                    // Let's check that this user is not already in our database
-                    const dbContent = DBdriver.getContent();
-                    if (Object.keys(dbContent).indexOf(accountId) < 0) {
-                        // Add new user to our database file
-                        dbContent[accountId] = event.data.customer;
-                        DBdriver.writeContent(dbContent);
-                    }
-                }
-            });
+        if (req.body && req.body.order) {
+            console.log(req.body.order);
+            const accountId = req.body.order.account;
+            const dbContent = DBdriver.getContent();
+            if (Object.keys(dbContent).indexOf(accountId) < 0) {
+                // Add new user to our database file
+                dbContent[accountId] = {};
+                DBdriver.writeContent(dbContent);
+            }
         }
     } catch (err) {
         console.log('An error has occurred while processing webhook: ', err.message);
@@ -81,6 +74,9 @@ app.get('/checkorder/:orderId', async (req, res) => {
             return res.json({ success: true, redirect: `/account.html?accountId=${accountId}` });
         }
         // User does not have a password yet
+        // Populate account information
+        dbContent[accountId] = order.customer;
+        DBdriver.writeContent(dbContent);
         // Redirect to password page
         return res.json({ success: true, redirect: `/password.html?accountId=${accountId}` });
     } catch (err) {
@@ -109,10 +105,11 @@ app.post('/setPassword', (req, res) => {
         if (!dbContent[accountId]) {
             throw new Error('User not found');
         }
+
         // Save password in database
         dbContent[accountId].password = password;
         DBdriver.writeContent(dbContent);
-
+        console.log(dbContent[accountId]);
         // Redirect to account page
         return res.json({ success: true, redirect: `/account.html?accountId=${accountId}` });
     } catch (err) {
