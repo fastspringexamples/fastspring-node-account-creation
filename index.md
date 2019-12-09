@@ -89,7 +89,7 @@ const express = require('express');
 const app = express();
 app.use(express.static('public'));
 
-const port = 3000;
+const port = 8000;
 
 
 app.listen(port, () => console.log(`App successfully listening on port ${port}!`));
@@ -116,7 +116,7 @@ Inside the recently created public folder, add a file **store.html** This file w
 ```
 
 
-Let’s test that our server is working fine. Execute the app by running `node index.js` in the command line and open up [http://localhost:3000/store.html](http://localhost:3000/store.html). You should see the following:
+Let’s test that our server is working fine. Execute the app by running `node index.js` in the command line and open up [http://localhost:8000/store.html](http://localhost:8000/store.html). You should see the following:
 
 
 
@@ -205,17 +205,17 @@ Let’s test that everything is working fine. Restart your server and send the f
 
 
 ```
-curl -d '{}' -X POST http://localhost:3000/processor
+curl -d '{}' -X POST http://localhost:8000/processor
 ```
 
 
 You should receive ‘Hello World’ as response.
 
-Now that our endpoint is working we’ll subscribe to the order.completed event in the FastSpring dashboard once our setup is completed. First, we need to make our local server publicly accessible through an SSH tunnel. I like to use [ngrok](https://ngrok.com/) for that. Because our server is open at port 3000 let’s create a tunnel in that port. In the command line enter:
+Now that our endpoint is working we’ll subscribe to the order.completed event in the FastSpring dashboard once our setup is completed. First, we need to make our local server publicly accessible through an SSH tunnel. I like to use [ngrok](https://ngrok.com/) for that. Because our server is open at port 8000 let’s create a tunnel in that port. In the command line enter:
 
 
 ```
-./ngrok http 3000
+./ngrok http 8000
 ```
 
 
