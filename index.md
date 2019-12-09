@@ -32,7 +32,7 @@ The above diagram depicts the standard Buyer-Seller-FastSpring flow in a swim-la
     2. An order.completed webhook event is fired off.
     3. Buyer receives an email with the fulfillment and receipt of the order.
 5. From the JSON object within the webhook event we retrieve the customer data and store it in our database.
-6. When the Buyer closes the Popup Thank you page, a callback function is triggered in the browser which contains the id and reference of the order. Then Seller then extracts the order ID and sends it to their backend.
+6. When the Buyer closes the Popup Thank you page, a callback function is triggered in the browser which contains the id and reference of the order. The Seller then extracts the order ID and sends it to their backend.
 7. In the Seller's backend, given the order ID, the Seller makes use of the FastSpring API to get information about the order. The Seller checks the Buyer who made this transaction and checks in their own database whether it exists and does not have a password set yet.
 8. The Seller directs the Buyer to a new page where she can finish the account creation by offering her password.
 9. After storing the Buyer's password, the account is completely finished in the Seller's backend. Now the Buyer can login to use the newly purchased SaaS solution.
@@ -476,8 +476,8 @@ const request = require('request-promise');
 
 // Replace with your own credentials!
 const FS_CREDENTIALS = {
-    username: 'NHOLARM9RPSQFRANIDPLZG',
-    password: 'gJ16aUlHSgqAo4BPuKHS6g',
+    username: 'TODO',
+    password: 'TODO',
 };
 
 const get = (params) => {
